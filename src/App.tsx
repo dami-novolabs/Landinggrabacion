@@ -569,7 +569,7 @@ function AccessForm({ emailInputRef }) {
               console.log("📄 Respuesta actualización tags:", updateText);
 
               if (updateResponse.ok) {
-                console.log("✅ Tags actualizados exitosamente");
+                console.log("��� Tags actualizados exitosamente");
               } else {
                 console.error("⚠️ Error actualizando tags");
               }
@@ -586,7 +586,7 @@ function AccessForm({ emailInputRef }) {
       // PASO 3: Redirigir a la masterclass
       console.log("🎉 Proceso completado, redirigiendo a masterclass");
       setTimeout(() => {
-        window.location.href = "https://masterclass.novolabs.xyz/";
+        window.location.href = "https://ver-masterclass.novolabs.xyz/";
       }, 500);
 
     } catch (error) {
