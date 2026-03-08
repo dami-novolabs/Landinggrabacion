@@ -208,35 +208,38 @@ function Hero({ onCtaClick }) {
   );
 }
 
-// Helper function to calculate next Wednesday + 7 days
+// Helper function to calculate deadline: 7 days from the most recent Wednesday
+// Resets every Wednesday at midnight
 function getNextMasterclassDeadline() {
   const now = new Date();
   const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
   
-  // Calculate days until next Wednesday (3)
-  let daysUntilWednesday;
-  if (currentDay <= 3) {
-    // If it's Sunday-Wednesday, get this week's Wednesday
-    daysUntilWednesday = 3 - currentDay;
+  // Calculate days since the most recent Wednesday (3)
+  // If today is Wednesday (3), days since = 0
+  // If today is Thursday (4), days since = 1
+  // If today is Sunday (0), days since = 4
+  let daysSinceWednesday;
+  if (currentDay >= 3) {
+    // Wednesday to Saturday
+    daysSinceWednesday = currentDay - 3;
   } else {
-    // If it's Thursday-Saturday, get next week's Wednesday
-    daysUntilWednesday = 7 - currentDay + 3;
+    // Sunday to Tuesday
+    daysSinceWednesday = currentDay + 4;
   }
   
-  // Get the next Wednesday
-  const nextWednesday = new Date(now);
-  nextWednesday.setDate(now.getDate() + daysUntilWednesday);
-  nextWednesday.setHours(0, 0, 0, 0); // Set to start of day
+  // Get the most recent Wednesday at midnight
+  const lastWednesday = new Date(now);
+  lastWednesday.setDate(now.getDate() - daysSinceWednesday);
+  lastWednesday.setHours(0, 0, 0, 0);
   
-  // Add 7 days for the deadline
-  const deadline = new Date(nextWednesday);
-  deadline.setDate(nextWednesday.getDate() + 7);
+  // The deadline is 7 days after the most recent Wednesday
+  const deadline = new Date(lastWednesday);
+  deadline.setDate(lastWednesday.getDate() + 7);
   
   return deadline.getTime();
 }
 
 function Access({ emailInputRef }) {
-  const [deadline] = useState(() => getNextMasterclassDeadline());
   return (
     <section id="acceso" className="relative isolate py-16 sm:py-24 bg-[rgba(0,0,0,1)]" data-testid="access-section">
       <div className="mx-auto max-w-5xl px-6">
@@ -251,7 +254,7 @@ function Access({ emailInputRef }) {
           <div className="order-first md:order-none">
             <h3 className="mb-6 text-2xl font-bold">300+ personas ya lanzaron su proyecto con el Método Novo™</h3>
 
-            <Countdown deadline={deadline} />
+            <Countdown />
             <ul className="mt-6 space-y-3 text-white/80" id="resumen">
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 size-5 text-[var(--brand-neon)]" />
@@ -276,7 +279,6 @@ function Access({ emailInputRef }) {
 
 
 function FomoFooter() {
-  const [deadline] = useState(() => getNextMasterclassDeadline());
   return (
     <footer className="relative border-t border-white/10 bg-[rgba(0,0,0,0.85)]" data-testid="footer">
       <div className="mx-auto max-w-6xl px-6 py-8">
@@ -647,12 +649,23 @@ function AccessForm({ emailInputRef }) {
   );
 }
 
-function Countdown({ deadline, size = "lg" }) {
+function Countdown({ size = "lg" }) {
+  const [deadline, setDeadline] = useState(() => getNextMasterclassDeadline());
   const [now, setNow] = useState(Date.now());
+  
   useEffect(() => {
-    const t = setInterval(() => setNow(Date.now()), 1000);
+    const t = setInterval(() => {
+      const currentTime = Date.now();
+      setNow(currentTime);
+      
+      // If deadline has passed, recalculate to get next Wednesday's deadline
+      if (currentTime >= deadline) {
+        setDeadline(getNextMasterclassDeadline());
+      }
+    }, 1000);
     return () => clearInterval(t);
-  }, []);
+  }, [deadline]);
+  
   const remaining = Math.max(0, deadline - now);
   const d = Math.floor(remaining / (24 * 60 * 60 * 1000));
   const h = Math.floor((remaining % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
