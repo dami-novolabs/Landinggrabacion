@@ -105,9 +105,9 @@ function Hero({ onCtaClick }) {
             transition={{ duration: 0.7 }}
             className="text-4xl leading-[1.1] md:text-6xl font-bold"
           >
-            Lanza tu proyecto con el <span className="text-[var(--brand-neon)] text-[64px]">Sistema de Validación Paga™</span>
+            Descubrí cómo lanzar tu proyecto al mercado <span className="text-[var(--brand-neon)] text-[64px]">paso a paso</span>
             <span className="block text-xl font-normal text-white/70 md:text-2xl mt-4">
-              Y evita malgastar tu tiempo y tu dinero en ideas que NO tienen sentido que existan.<br className="hidden md:block" />  <span className="font-bold text-[var(--brand-rojo)]">Disponible sólo por 7 días</span>.
+              Aplica los 6 pasos del Sistema de Validación Paga™ para evitar malgastar tiempo y dinero en construir cosas que nadie te quiera comprar.<br className="hidden md:block" />  <span className="font-bold text-[var(--brand-rojo)]">Disponible sólo por 7 días</span>.
             </span>
           </motion.h1>
 
