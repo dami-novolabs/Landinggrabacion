@@ -252,7 +252,7 @@ function Access({ emailInputRef }) {
           </div>
 
           <div className="order-first md:order-none">
-            <h3 className="mb-6 text-2xl font-bold">300+ personas ya lanzaron su proyecto con el Método Novo™</h3>
+            <h3 className="mb-6 text-2xl font-bold">350+ personas ya lanzaron su proyecto al mercado con Novolabs</h3>
 
             <Countdown />
             <ul className="mt-6 space-y-3 text-white/80" id="resumen">
